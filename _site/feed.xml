@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-04-08T19:03:21-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Stonbit</title><subtitle>IT · Security · Automation</subtitle><author><name>Stonbit</name></author><entry><title type="html">Building a config-driven printer deployment package for Intune</title><link href="http://localhost:4000/blog/2026/04/08/intune-printer-deployment/" rel="alternate" type="text/html" title="Building a config-driven printer deployment package for Intune" /><published>2026-04-08T00:00:00-06:00</published><updated>2026-04-08T00:00:00-06:00</updated><id>http://localhost:4000/blog/2026/04/08/intune-printer-deployment</id><content type="html" xml:base="http://localhost:4000/blog/2026/04/08/intune-printer-deployment/"><![CDATA[<p>We do direct IP printing with no print server. When I needed to deploy printers to managed devices via Intune, I couldn’t lean on the usual Group Policy printer deployment path. I built a Win32 app package instead.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>Intune doesn’t have a native “deploy a printer” workflow for direct IP scenarios. Your options are basically:</p>
+
+<ul>
+  <li>Manual installation on each device</li>
+  <li>A script deployed as a PowerShell script object (limited logging, harder to target)</li>
+  <li>A Win32 app with proper install/detection/uninstall logic</li>
+</ul>
+
+<p>Win32 app was the right call. It gives you proper deployment targeting, retry logic, and the ability to define detection rules.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<p>The package has three main components:</p>
+
+<p><strong>A JSON config file</strong> that holds all the printer-specific values — IP address, driver name, port name, share name. This means the logic scripts never need to change between printer deployments. You just swap the config.</p>
+
+<p><strong>An install script</strong> that reads the config, creates the TCP/IP port if it doesn’t exist, installs the driver, and adds the printer. Every operation is idempotent — running it twice doesn’t create duplicates or errors.</p>
+
+<p><strong>A detection script</strong> that checks whether the printer exists on the system and exits with the appropriate code for Intune to interpret as installed or not.</p>
+
+<h2 id="what-i-learned">What I learned</h2>
+
+<p>The detection script is where I initially ran into trouble. My first version checked that the printer port was bound rather than checking a registry key, which caused false negatives. The more reliable approach is checking for the printer object directly via <code class="language-plaintext highlighter-rouge">Get-Printer</code> or using a registry key detection rule in Intune rather than a script at all.</p>
+
+<p>Persistent logging to a fixed path made troubleshooting significantly easier — instead of guessing what happened during a silent deployment, you have a dated log file telling you exactly what ran and what the result was.</p>
+
+<h2 id="result">Result</h2>
+
+<p>A single deployment package that can be reconfigured for any direct IP printer by editing one JSON file. Clean install, clean uninstall, reliable detection.</p>
+
+<p>The scripts are on GitHub if you want to adapt them for your own environment.</p>]]></content><author><name>Stonbit</name></author><category term="intune" /><category term="powershell" /><category term="automation" /><summary type="html"><![CDATA[How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging.]]></summary></entry></feed>

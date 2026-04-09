@@ -1,0 +1,25 @@
+---
+layout: default
+title: Blog
+---
+
+<div class="section-header" style="margin-bottom: 2rem;">
+  <span class="section-num">—</span>
+  <span class="section-title">All posts</span>
+</div>
+
+<div class="post-list">
+  {% for post in site.posts %}
+  <a href="{{ post.url | relative_url }}" class="post-item">
+    <div class="post-item-left">
+      <span class="post-item-title">{{ post.title }}</span>
+      <div class="post-item-tags">
+        {% for cat in post.categories %}
+        <span class="post-item-tag">{{ cat }}</span>
+        {% endfor %}
+      </div>
+    </div>
+    <span class="post-item-date">{{ post.date | date: "%b %d, %Y" }}</span>
+  </a>
+  {% endfor %}
+</div>

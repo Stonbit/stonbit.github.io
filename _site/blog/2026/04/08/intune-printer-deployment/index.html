@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Building a config-driven printer deployment package for Intune · Stonbit</title>
+  <meta name="description" content="How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging.">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Building a config-driven printer deployment package for Intune | Stonbit</title>
+<meta name="generator" content="Jekyll v4.4.1" />
+<meta property="og:title" content="Building a config-driven printer deployment package for Intune" />
+<meta name="author" content="Stonbit" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging." />
+<meta property="og:description" content="How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging." />
+<link rel="canonical" href="http://localhost:4000/blog/2026/04/08/intune-printer-deployment/" />
+<meta property="og:url" content="http://localhost:4000/blog/2026/04/08/intune-printer-deployment/" />
+<meta property="og:site_name" content="Stonbit" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2026-04-08T00:00:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Building a config-driven printer deployment package for Intune" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Stonbit"},"dateModified":"2026-04-08T00:00:00-06:00","datePublished":"2026-04-08T00:00:00-06:00","description":"How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging.","headline":"Building a config-driven printer deployment package for Intune","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/blog/2026/04/08/intune-printer-deployment/"},"url":"http://localhost:4000/blog/2026/04/08/intune-printer-deployment/"}</script>
+<!-- End Jekyll SEO tag -->
+
+  <link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Stonbit" />
+</head>
+<body>
+  <div class="site-wrapper">
+    <nav class="site-nav">
+      <a href="/" class="nav-name">Stonbit</a>
+      <ul class="nav-links">
+        <li><a href="/projects/">projects</a></li>
+        <li><a href="/blog/">blog</a></li>
+        <li><a href="/about/">about</a></li>
+        <li><a href="https://github.com/yourusername" target="_blank">github</a></li>
+      </ul>
+    </nav>
+
+    <main>
+      <article>
+  <header class="post-header">
+    <div class="post-meta">
+      <span class="post-date">April 08, 2026</span>
+      
+      <div class="post-categories">
+        
+        <span class="post-category">intune</span>
+        
+        <span class="post-category">powershell</span>
+        
+        <span class="post-category">automation</span>
+        
+      </div>
+      
+    </div>
+    <h1 class="post-title">Building a config-driven printer deployment package for Intune</h1>
+    
+    <p style="font-size: 17px; color: var(--color-text-secondary); margin-top: 0.75rem;">How I built a Win32 app deployment package for network printers using a JSON config file, idempotent scripts, and persistent logging.</p>
+    
+  </header>
+
+  <div class="post-content">
+    <p>We do direct IP printing with no print server. When I needed to deploy printers to managed devices via Intune, I couldn’t lean on the usual Group Policy printer deployment path. I built a Win32 app package instead.</p>
+
+<h2 id="the-problem">The problem</h2>
+
+<p>Intune doesn’t have a native “deploy a printer” workflow for direct IP scenarios. Your options are basically:</p>
+
+<ul>
+  <li>Manual installation on each device</li>
+  <li>A script deployed as a PowerShell script object (limited logging, harder to target)</li>
+  <li>A Win32 app with proper install/detection/uninstall logic</li>
+</ul>
+
+<p>Win32 app was the right call. It gives you proper deployment targeting, retry logic, and the ability to define detection rules.</p>
+
+<h2 id="architecture">Architecture</h2>
+
+<p>The package has three main components:</p>
+
+<p><strong>A JSON config file</strong> that holds all the printer-specific values — IP address, driver name, port name, share name. This means the logic scripts never need to change between printer deployments. You just swap the config.</p>
+
+<p><strong>An install script</strong> that reads the config, creates the TCP/IP port if it doesn’t exist, installs the driver, and adds the printer. Every operation is idempotent — running it twice doesn’t create duplicates or errors.</p>
+
+<p><strong>A detection script</strong> that checks whether the printer exists on the system and exits with the appropriate code for Intune to interpret as installed or not.</p>
+
+<h2 id="what-i-learned">What I learned</h2>
+
+<p>The detection script is where I initially ran into trouble. My first version checked that the printer port was bound rather than checking a registry key, which caused false negatives. The more reliable approach is checking for the printer object directly via <code class="language-plaintext highlighter-rouge">Get-Printer</code> or using a registry key detection rule in Intune rather than a script at all.</p>
+
+<p>Persistent logging to a fixed path made troubleshooting significantly easier — instead of guessing what happened during a silent deployment, you have a dated log file telling you exactly what ran and what the result was.</p>
+
+<h2 id="result">Result</h2>
+
+<p>A single deployment package that can be reconfigured for any direct IP printer by editing one JSON file. Clean install, clean uninstall, reliable detection.</p>
+
+<p>The scripts are on GitHub if you want to adapt them for your own environment.</p>
+
+  </div>
+</article>
+
+<div class="divider"></div>
+
+<div style="display: flex; justify-content: space-between; padding: 1rem 0; font-family: var(--font-mono); font-size: 13px;">
+  
+  <span></span>
+  
+  
+</div>
+
+    </main>
+
+    <footer class="site-footer">
+      <span class="footer-left">http://localhost:4000</span>
+      <ul class="footer-links">
+        <li><a href="https://github.com/yourusername" target="_blank">github</a></li>
+        <li><a href="https://linkedin.com/in/yourlinkedin" target="_blank">linkedin</a></li>
+        <li><a href="/resume/">resume</a></li>
+      </ul>
+    </footer>
+  </div>
+</body>
+</html>

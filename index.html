@@ -1,0 +1,113 @@
+---
+layout: default
+---
+
+<header class="hero">
+  <p class="hero-label">IT / Security</p>
+  <h1 class="hero-name">Systems.<br><span>Security.</span><br>Automation.</h1>
+  <p class="hero-tagline">
+    Building endpoint management pipelines, internal tooling, and working toward a career in <em>offensive security</em>.
+  </p>
+  <div class="status-bar">
+    <span class="status-dot"></span>
+    <span>currently: pursuing Network+ · Security+ · OSCP track</span>
+  </div>
+</header>
+
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">Recent writing</span>
+  </div>
+
+  <div class="post-list">
+    {% for post in site.posts limit:5 %}
+    <a href="{{ post.url | relative_url }}" class="post-item">
+      <div class="post-item-left">
+        <span class="post-item-title">{{ post.title }}</span>
+        <div class="post-item-tags">
+          {% for cat in post.categories %}
+          <span class="post-item-tag">{{ cat }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <span class="post-item-date">{{ post.date | date: "%b %d, %Y" }}</span>
+    </a>
+    {% endfor %}
+  </div>
+
+  {% if site.posts.size > 5 %}
+  <div style="margin-top: 1.5rem;">
+    <a href="{{ '/blog/' | relative_url }}" style="font-family: var(--font-mono); font-size: 13px; color: var(--color-text-tertiary);">all posts →</a>
+  </div>
+  {% endif %}
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Projects</span>
+  </div>
+
+  <div class="project-grid">
+    {% for project in site.projects %}
+    <a href="{{ project.url | relative_url }}" class="project-card">
+      <span class="project-tag {{ project.category }}">{{ project.tag_label }}</span>
+      <p class="project-title">{{ project.title }}</p>
+      <p class="project-desc">{{ project.description }}</p>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Skills</span>
+  </div>
+  <div class="skills-row">
+    <span class="skill-chip">Microsoft Intune</span>
+    <span class="skill-chip">PowerShell</span>
+    <span class="skill-chip">Power Apps</span>
+    <span class="skill-chip">Power Automate</span>
+    <span class="skill-chip">Dataverse</span>
+    <span class="skill-chip">Kali Linux</span>
+    <span class="skill-chip">OPNsense</span>
+    <span class="skill-chip">Active Directory</span>
+    <span class="skill-chip">Python</span>
+    <span class="skill-chip">Bash</span>
+    <span class="skill-chip">Networking</span>
+    <span class="skill-chip">TryHackMe</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="section">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">Certifications</span>
+  </div>
+  <div class="cert-list">
+    <div class="cert-item">
+      <span class="cert-name">CompTIA A+</span>
+      <span class="cert-status earned">earned</span>
+    </div>
+    <div class="cert-item">
+      <span class="cert-name">CompTIA Network+</span>
+      <span class="cert-status progress">in progress</span>
+    </div>
+    <div class="cert-item">
+      <span class="cert-name">CompTIA Security+</span>
+      <span class="cert-status progress">in progress</span>
+    </div>
+    <div class="cert-item">
+      <span class="cert-name">OSCP</span>
+      <span class="cert-status planned">planned</span>
+    </div>
+  </div>
+</section>

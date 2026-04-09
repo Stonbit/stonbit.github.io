@@ -1,0 +1,39 @@
+---
+layout: default
+---
+
+<article>
+  <header class="post-header">
+    <div class="post-meta">
+      <span class="post-date">{{ page.date | date: "%B %d, %Y" }}</span>
+      {% if page.categories %}
+      <div class="post-categories">
+        {% for cat in page.categories %}
+        <span class="post-category">{{ cat }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.description %}
+    <p style="font-size: 17px; color: var(--color-text-secondary); margin-top: 0.75rem;">{{ page.description }}</p>
+    {% endif %}
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+</article>
+
+<div class="divider"></div>
+
+<div style="display: flex; justify-content: space-between; padding: 1rem 0; font-family: var(--font-mono); font-size: 13px;">
+  {% if page.previous.url %}
+  <a href="{{ page.previous.url | relative_url }}" style="color: var(--color-text-secondary);">← {{ page.previous.title }}</a>
+  {% else %}
+  <span></span>
+  {% endif %}
+  {% if page.next.url %}
+  <a href="{{ page.next.url | relative_url }}" style="color: var(--color-text-secondary);">{{ page.next.title }} →</a>
+  {% endif %}
+</div>

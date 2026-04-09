@@ -1,0 +1,19 @@
+---
+layout: default
+title: Projects
+---
+
+<div class="section-header" style="margin-bottom: 2rem;">
+  <span class="section-num">—</span>
+  <span class="section-title">Projects</span>
+</div>
+
+<div class="project-grid">
+  {% for project in site.projects %}
+  <a href="{{ project.url | relative_url }}" class="project-card">
+    <span class="project-tag {{ project.category }}">{{ project.tag_label }}</span>
+    <p class="project-title">{{ project.title }}</p>
+    <p class="project-desc">{{ project.description }}</p>
+  </a>
+  {% endfor %}
+</div>
