@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "{{title}}"
-date: {{date:YYYY-MM-DD}}
+title: "<% tp.file.rename(tp.date.now("YYYY-MM-DD") + "-" + tp.file.title) %>"
+date: <% tp.date.now("YYYY-MM-DD") %>
 categories: []
 description: 
 ---
