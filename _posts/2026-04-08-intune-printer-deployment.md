@@ -10,32 +10,29 @@ We do direct IP printing with no print server. When I needed to deploy printers 
 
 ## The problem
 
-Intune doesn't have a native "deploy a printer" workflow for direct IP scenarios. Your options are basically:
+Our environment manages printing via Direct to IP. Up until this point, we had been manually installing every printer as IT staff. That meant, upon wiping and imaging a device, we were having to remember which printer staff or faculty needed access to, and installing it ourselves.
 
-- Manual installation on each device
-- A script deployed as a PowerShell script object (limited logging, harder to target)
-- A Win32 app with proper install/detection/uninstall logic
+I sought a solution to this problem, and considering our recent migration to Intune had just begun, I looked for methods of deploying a solution to our users. Taking to Google, I found a nifty little reddit thread detailing win32 app deployment, which further linked out to an endpoint administration site with an entire guide on win32 app packaging for printer deployment. Lucky me!
 
-Win32 app was the right call. It gives you proper deployment targeting, retry logic, and the ability to define detection rules.
+So, I got to work. I opened up VSCode and a browser session with ChatGPT and the endpoint guide, and began building out a plan.
 
 ## Architecture
 
 The package has three main components:
 
-**A JSON config file** that holds all the printer-specific values — IP address, driver name, port name, share name. This means the logic scripts never need to change between printer deployments. You just swap the config.
+**A JSON config file** that holds all the printer-specific values — IP address, driver name, port name, share name. This means the logic scripts never need to change between printer deployments. All it takes is a simple file swap. I was familiar with JSON files from digging around in game files, which is not an uncommon source of my technical knowledge it turns out.
 
-**An install script** that reads the config, creates the TCP/IP port if it doesn't exist, installs the driver, and adds the printer. Every operation is idempotent — running it twice doesn't create duplicates or errors.
+**An install script** that reads the config, creates the TCP/IP port if it doesn't exist, installs the driver, and adds the printer. Every operation is idempotent — running it twice doesn't create duplicates or errors. After reading "The Pragmatic Programmer", I was obsessed with making sure I checked for every error I could think of. I was absolutely terrified of designing bad code, and took every precaution I could to try and make this robust and production ready.
 
-**A detection script** that checks whether the printer exists on the system and exits with the appropriate code for Intune to interpret as installed or not.
+**A detection script** that checks whether the printer exists on the system. The first implementation of this failed miserably. I was checking that the port was created, even when the guide had recommended a registry key check. After implementing the change, the detection script worked.
 
 ## What I learned
 
-The detection script is where I initially ran into trouble. My first version checked that the printer port was bound rather than checking a registry key, which caused false negatives. The more reliable approach is checking for the printer object directly via `Get-Printer` or using a registry key detection rule in Intune rather than a script at all.
+Sometimes, the best way to learn is to do. Not too long ago, this all felt very arcane to me. Like the only people who could develop working scripts to any real degree of polish were wizards with knowledge totally beyond me. But, that's simply not the case. Sure, I might create bad scripts, or come up with the occasional bad idea, but the only thing that hurts me is to not even try.
 
-Persistent logging to a fixed path made troubleshooting significantly easier — instead of guessing what happened during a silent deployment, you have a dated log file telling you exactly what ran and what the result was.
+This script turned out better than I could have ever hoped, and I learned a lot about powershell along the way. The important thing, especially when working with AI, is to take your time. Don't paste any code, the best thing you can do for yourself and everyone around you is to read the documentation. Understand every command, every line that you type, and what you can do with those lines of code in the future. The goal is to learn, not to generate.
 
 ## Result
 
 A single deployment package that can be reconfigured for any direct IP printer by editing one JSON file. Clean install, clean uninstall, reliable detection.
 
-The scripts are on GitHub if you want to adapt them for your own environment.
