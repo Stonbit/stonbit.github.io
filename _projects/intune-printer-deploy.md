@@ -1,11 +1,14 @@
 ---
 layout: project
-title: "Intune Printer Deployment Package"
+title: Intune Printer Deployment Package
 description: Config-driven Win32 app for deploying direct IP printers via Microsoft Intune. JSON config, idempotent scripts, persistent logging.
 category: ops
 tag_label: PowerShell · Intune
-stack: [PowerShell, Microsoft Intune, JSON]
-github: https://github.com/yourusername/intune-printer-deploy
+stack:
+  - PowerShell
+  - Microsoft Intune
+  - JSON
+github: https://github.com/Stonbit/printer-deploy
 ---
 
 A deployment package for pushing network printers to Intune-managed Windows devices without a print server.
