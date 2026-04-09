@@ -6,9 +6,8 @@ baseurl: ""
 author:
   name: Stonbit
   tagline: IT professional building toward offensive security.
-  location: New Mexico
-  github: yourusername
-  linkedin: yourlinkedin
+  location:
+  github: stonbit
 
 # Build settings
 markdown: kramdown
