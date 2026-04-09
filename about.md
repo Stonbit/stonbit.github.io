@@ -16,16 +16,16 @@ title: About
   </p>
 
   <p>
-    I'm working toward a career in offensive security — currently on the OSCP track, studying for Network+ and Security+, and doing pentesting practice on TryHackMe. I run a security-focused home lab with OPNsense, Kali Linux, Windows 11, and Ubuntu, and I'm involved with DEF CON as a volunteer with DEF CON Franklin, assisting rural water utilities with basic security hardening.
+    I'm working toward a career in offensive security — currently on the OSCP track, studying for Network+ and Security+, and doing pentesting practice on TryHackMe. I run a security-focused home lab for hands on, self driven, lab based practice. 
   </p>
 
   <p>
-    This site is where I log the journey — lab writeups, cert notes, things I've built, and problems I've worked through.
+    This site is where I log the journey. Lab writeups, cert notes, things I've built, and problems I've worked through.
   </p>
 
   <h2>Currently</h2>
   <p>
-    Pursuing Network+ and Security+. Building internal tooling on the Power Platform. Grinding TryHackMe pentesting path.
+    Pursuing Network+ and Security+. Building internal tooling on the Power Platform.
   </p>
 
   <h2>Stack</h2>
