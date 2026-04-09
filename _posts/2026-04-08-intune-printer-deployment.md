@@ -14,7 +14,7 @@ Our environment manages printing via Direct to IP. Up until this point, we had b
 
 I sought a solution to this problem, and considering our recent migration to Intune had just begun, I looked for methods of deploying a solution to our users. Taking to Google, I found a nifty little reddit thread detailing win32 app deployment, which further linked out to an endpoint administration site with an entire guide on win32 app packaging for printer deployment. Lucky me!
 
-So, I got to work. I opened up VSCode and a browser session with ChatGPT and the endpoint guide, and began building out a plan.
+So, I got to work. I opened up VSCode and a browser session with the endpoint guide, and began building out a plan.
 
 ## Architecture
 
