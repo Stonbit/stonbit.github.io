@@ -10,7 +10,7 @@ description:
 ---
 ## Overview
 
-I recently read "The Phoenix Project" - by Gene Kim, Kevin Behr, and George Spafford, and hot damn is it an eye opener. The book follows Bill, an IT manager who has been tasked as VP of IT Operations during a major deployment for his company dubbed: Project Phoenix. Bill, in his journey, learns just how dysfunction his organization is when it comes to IT workloads. Other organizational units hate the department because, in their minds, IT is constantly a wall to getting their work done. From a board member, he learns that manufacturing workflows are surprisingly similar to IT workflows, and we can take some methodologies from LEAN and AGILE manufacturing to improve our own workflows in IT.
+I recently read "The Phoenix Project" - by Gene Kim, Kevin Behr, and George Spafford, and hot damn is it an eye opener. The book follows Bill, an IT manager who has been tasked as VP of IT Operations during a major deployment for his company dubbed: Project Phoenix. Bill, in his journey, learns just how dysfunctional his organization is when it comes to IT workloads. Other organizational units hate the department because, in their minds, IT is constantly a wall to getting their work done. From a board member, he learns that manufacturing workflows are surprisingly similar to IT workflows, and we can take some methodologies from LEAN and AGILE manufacturing to improve our own workflows in IT.
 
 ## The Four Kinds of Work
 
